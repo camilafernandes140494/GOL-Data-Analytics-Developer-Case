@@ -1,1 +1,28 @@
-<p>booking works!</p>
+<div class="form-container">
+  <h2>Register Booking</h2>
+  <span class="material-symbols-outlined">add</span>
+  <span class="material-symbols-outlined">upload</span>
+  <span class="material-symbols-outlined">download</span>
+  <mat-form-field appearance="fill">
+    <mat-label>Passenger Name</mat-label>
+    <input matInput [(ngModel)]="passengerName" placeholder="Enter name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Departure Date</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="departureDate" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Route</mat-label>
+    <mat-select [(ngModel)]="route">
+      <mat-option value="GRU-JFK">GRU - JFK</mat-option>
+      <mat-option value="GRU-MIA">GRU - MIA</mat-option>
+      <mat-option value="GRU-CDG">GRU - CDG</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="submit()">Register</button>
+</div>

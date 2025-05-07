@@ -1,26 +1,39 @@
 import { Component } from '@angular/core';
 import { BookingService } from './booking.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-booking',
-  imports: [],
+  imports: [
+    CommonModule,
+
+  ],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss',
 })
 export class BookingComponent {
-  bookings: any[] = [];
+  nome: string = '';
+  email: string = '';
+  senha: string = '';
 
   constructor(private bookingService: BookingService) {}
 
-  ngOnInit() {
-    this.bookingService.getBookings().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.bookings = data as any[];
+  onCadastrar() {
+    const usuario = {
+      nome: this.nome,
+      email: this.email,
+      senha: this.senha,
+    };
+
+    this.bookingService.createBooking(usuario).subscribe(
+      (response) => {
+        console.log('Cadastro realizado com sucesso:', response);
+        // Aqui você pode redirecionar o usuário ou exibir uma mensagem de sucesso
       },
-      error: (err) => {
-        console.error('Erro ao buscar reservas:', err);
-      },
-    });
+      (error) => {
+        console.error('Erro no cadastro:', error);
+        // Aqui você pode exibir uma mensagem de erro
+      }
+    );
   }
 }
