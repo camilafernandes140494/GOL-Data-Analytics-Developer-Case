@@ -1,28 +1,42 @@
-<div class="form-container">
-  <h2>Register Booking</h2>
-  <span class="material-symbols-outlined">add</span>
-  <span class="material-symbols-outlined">upload</span>
-  <span class="material-symbols-outlined">download</span>
-  <mat-form-field appearance="fill">
-    <mat-label>Passenger Name</mat-label>
-    <input matInput [(ngModel)]="passengerName" placeholder="Enter name" />
-  </mat-form-field>
+<div class="container">
+  <div class="button-row">
+    <button
+      mat-flat-button
+      (click)="alterarEstado($event)"
+      [disabled]="isClicked"
+      type="button"
+    >
+      Cadastrar uma reserva
+    </button>
+    <button mat-stroked-button>Download das reservas</button>
+    <button mat-stroked-button>Upload das reservas</button>
+  </div>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Departure Date</mat-label>
-    <input matInput [matDatepicker]="picker" [(ngModel)]="departureDate" />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+  <!-- Tabela de Reservas -->
+  <div class="reservas-tabela">
+    <table mat-table [dataSource]="reservas" class="mat-elevation-z8">
+      <ng-container matColumnDef="first_name">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let reserva">{{ reserva.first_name }}</td>
+      </ng-container>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Route</mat-label>
-    <mat-select [(ngModel)]="route">
-      <mat-option value="GRU-JFK">GRU - JFK</mat-option>
-      <mat-option value="GRU-MIA">GRU - MIA</mat-option>
-      <mat-option value="GRU-CDG">GRU - CDG</mat-option>
-    </mat-select>
-  </mat-form-field>
+      <ng-container matColumnDef="last_name">
+        <th mat-header-cell *matHeaderCellDef>Data da Reserva</th>
+        <td mat-cell *matCellDef="let reserva">{{ reserva.last_name }}</td>
+      </ng-container>
 
-  <button mat-raised-button color="primary" (click)="submit()">Register</button>
+      <ng-container matColumnDef="birthday">
+        <th mat-header-cell *matHeaderCellDef>Data de nascimento</th>
+        <td mat-cell *matCellDef="let reserva">{{ reserva.birthday }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="document">
+        <th mat-header-cell *matHeaderCellDef>Documento</th>
+        <td mat-cell *matCellDef="let reserva">{{ reserva.document }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 </div>

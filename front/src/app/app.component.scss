@@ -1,0 +1,19 @@
+header {
+  display: flex; /* Alinha a imagem e o texto lado a lado */
+  align-items: center; /* Alinha verticalmente a imagem e o texto no centro */
+  gap: 10px; /* Espaço entre a imagem e o texto */
+  padding: 10px 20px; /* Adiciona um pouco de espaçamento interno ao header */
+  background-color: #f4f4f4; /* Cor de fundo (opcional, pode mudar) */
+  border-radius: 8px; /* Bordas arredondadas (opcional) */
+}
+
+header img {
+  width: 60px; /* Controla o tamanho da imagem */
+  height: auto; /* Mantém a proporção da imagem */
+}
+
+header p {
+  font-size: 24px; /* Define o tamanho da fonte do texto */
+  margin: 0; /* Remove o espaço padrão das margens */
+  color: #333; /* Cor do texto */
+}

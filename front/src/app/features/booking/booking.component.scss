@@ -1,8 +1,23 @@
-.form-container {
+.container {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+  padding: 24px;
+}
+
+.button-row {
+  display: flex;
+  flex-direction: row;
+  width: "100%";
+  justify-content: center;
+  gap: 16px;
+}
+
+.clicked {
+  background-color: #4caf50; /* Cor verde quando clicado */
+  color: white;
+}
+
+button {
+  margin-right: 10px;
 }

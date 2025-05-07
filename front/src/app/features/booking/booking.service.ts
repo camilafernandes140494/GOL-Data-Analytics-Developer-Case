@@ -1,6 +1,23 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 
+export interface Booking {
+  first_name: string;
+  last_name: string;
+  birthday: string;
+  document: string;
+  departure_date: string;
+  departure_iata: string;
+  arrival_iata: string;
+  arrival_date: string;
+}
+
+export interface BookingResponse {
+  count: number;
+  limit: number;
+  data: Booking[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,10 +30,10 @@ export class BookingService {
   // Tabela	Reservas	GET /api/v1/booking
 
   getBookings() {
-    return this.apiService.get('/api/v1/booking');
+    return this.apiService.get<BookingResponse>('/api/v1/booking');
   }
 
-  createBooking(bookingData: any) {
+  createBooking(bookingData: Booking) {
     return this.apiService.post('/api/v1/booking', bookingData);
   }
 
