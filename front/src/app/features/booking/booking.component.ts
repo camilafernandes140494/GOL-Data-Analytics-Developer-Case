@@ -19,6 +19,7 @@ import { MatSort } from '@angular/material/sort';
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSort,
   ],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss'],
@@ -80,6 +81,7 @@ export class BookingComponent {
         }
       );
   }
+
   isLoading = false;
   handleCreateBooking(event: Event) {
     event.preventDefault();
@@ -164,5 +166,11 @@ export class BookingComponent {
         }
       );
     }
+  }
+
+  // Função para aplicar o filtro na tabela
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

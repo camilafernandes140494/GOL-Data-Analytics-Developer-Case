@@ -14,24 +14,28 @@
       style="display: none"
       (change)="handleUploadBookings($event)"
     />
-
     <button mat-stroked-button (click)="fileInput.click()">
       Upload das reservas
     </button>
+  </div>
+
+  <!-- Filtro para a tabela -->
+
+  <div class="filter-row">
+    <mat-form-field class="full-width">
+      <mat-label>Pesquisar</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Pesquisar" />
+      <button mat-icon-button matSuffix (click)="applyFilter($event)">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+    </mat-form-field>
   </div>
 
   <!-- Tabela de Reservas -->
   <div class="reservas-tabela">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
       <ng-container matColumnDef="first_name">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="Sort first_name name"
-        >
-          Nome
-        </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
         <td mat-cell *matCellDef="let reserva">{{ reserva.first_name }}</td>
       </ng-container>
 
@@ -86,7 +90,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <mat-paginator
-      [pageSizeOptions]="[2, 5, 10, 20]"
+      [pageSizeOptions]="[5, 10, 20]"
       showFirstLastButtons
       aria-label="Select page of periodic elements"
     >
