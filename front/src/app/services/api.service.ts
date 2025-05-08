@@ -25,10 +25,13 @@ export class ApiService {
     });
   }
 
-  get<T>(endpoint: string): Observable<T> {
-    return this.http.get<T>(`${environment.apiUrl}${endpoint}`, {
+  get<T>(endpoint: string, options?: { [key: string]: any }): Observable<T> {
+    const httpOptions = {
       headers: this.getAuthHeaders(),
-    });
+      ...options,
+    };
+
+    return this.http.get<T>(`${environment.apiUrl}${endpoint}`, httpOptions);
   }
 
   post<T>(endpoint: string, body: any): Observable<T> {

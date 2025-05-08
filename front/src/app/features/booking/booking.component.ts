@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Booking, BookingResponse, BookingService } from './booking.service';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-booking',
@@ -16,6 +18,7 @@ import { Booking, BookingResponse, BookingService } from './booking.service';
     MatInputModule,
     MatButtonModule,
     MatTableModule,
+    MatPaginatorModule,
   ],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss'],
@@ -23,18 +26,18 @@ import { Booking, BookingResponse, BookingService } from './booking.service';
 export class BookingComponent {
   nome: string = '';
   mensagem: string = '';
-  isClicked: boolean = false;
-
   // Dados de exemplo para a tabela
-  reservas: Booking[] = [];
+  dataSource = new MatTableDataSource<Booking>();
 
   displayedColumns: string[] = [
-    // 'Nome',
-    // 'Sobrenome',
-    // 'Data de nascimento',
-    // 'Documento',
-    // 'Data de partida',
-    // 'Data de chegada',
+    'first_name',
+    'last_name',
+    'birthday',
+    'document',
+    'departure_date',
+    'departure_iata',
+    'arrival_iata',
+    'arrival_date',
   ];
   constructor(private bookingService: BookingService) {}
 
@@ -42,22 +45,45 @@ export class BookingComponent {
     // Chama o método getBookings ao inicializar o componente
     this.getBookings();
   }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  // Método para carregar as reservas da API
-  getBookings() {
-    this.bookingService.getBookings().subscribe(
-      (response: BookingResponse) => {
-        this.reservas = response.data; // Atualiza a variável reservas com a resposta da API
-        console.log('Reservas carregadas:', this.reservas);
-      },
-      (error) => {
-        this.mensagem = `Erro ao carregar as reservas.`;
-        console.error(error);
-      }
-    );
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+    this.paginator.page.subscribe(() => {
+      this.getBookings(this.paginator.pageIndex, this.paginator.pageSize);
+    });
+
+    this.sort.sortChange.subscribe(() => {
+      // Resetar para a primeira página ao ordenar
+      this.paginator.pageIndex = 0;
+      this.getBookings(this.paginator.pageIndex, this.paginator.pageSize);
+    });
   }
-  alterarEstado(event: Event) {
+
+  getBookings(pageIndex: number = 0, pageSize: number = 10) {
+    const offset = pageIndex * pageSize;
+
+    this.bookingService
+      .getBookings({
+        limit: pageSize,
+      })
+      .subscribe(
+        (response: BookingResponse) => {
+          this.dataSource.data = response.data;
+        },
+        (error) => {
+          this.mensagem = `Erro ao carregar as reservas.`;
+          console.error(error);
+        }
+      );
+  }
+  isLoading = false;
+  handleCreateBooking(event: Event) {
     event.preventDefault();
+    this.isLoading = true;
     // Criar o objeto bookingData com os dados do formulário
     const bookingData: Booking = {
       first_name: 'bla lsdas',
@@ -74,7 +100,6 @@ export class BookingComponent {
     this.bookingService.createBooking(bookingData).subscribe(
       (response) => {
         this.mensagem = `Reserva de ${this.nome} criada com sucesso!`;
-        this.isClicked = true;
         console.log(response);
       },
       (error) => {
@@ -82,10 +107,62 @@ export class BookingComponent {
         console.error(error);
       }
     );
+    this.isLoading = false;
   }
 
-  // Função para enviar o formulário (exemplo)
-  enviar() {
-    this.mensagem = `Reserva de ${this.nome} enviada com sucesso!`;
+  handleDownloadBookings(event: Event) {
+    event.preventDefault();
+
+    this.bookingService.downloadBookings().subscribe(
+      (response: Blob) => {
+        const blob = new Blob([response], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        const now = new Date();
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        const timestamp = `${now.getFullYear()}-${pad(
+          now.getMonth() + 1
+        )}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(
+          now.getMinutes()
+        )}`;
+        const fileName = `reservas-${timestamp}.xlsx`;
+
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      (error) => {
+        this.mensagem = `Erro ao fazer download das reservas.`;
+        console.error(error);
+      }
+    );
+  }
+
+  selectedFile: File | null = null;
+
+  handleUploadBookings(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      this.selectedFile = input.files[0];
+
+      const formData = new FormData();
+      formData.append('content', this.selectedFile);
+
+      this.bookingService.uploadBookings(formData).subscribe(
+        () => {
+          this.mensagem = 'Upload realizado com sucesso!';
+        },
+        (error) => {
+          this.mensagem = 'Erro ao fazer upload das reservas.';
+          console.error(error);
+        }
+      );
+    }
   }
 }

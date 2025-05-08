@@ -1,33 +1,57 @@
 <div class="container">
   <div class="button-row">
-    <button
-      mat-flat-button
-      (click)="alterarEstado($event)"
-      [disabled]="isClicked"
-      type="button"
-    >
+    <button mat-flat-button (click)="handleCreateBooking($event)" type="button">
       Cadastrar uma reserva
     </button>
-    <button mat-stroked-button>Download das reservas</button>
-    <button mat-stroked-button>Upload das reservas</button>
+    <button mat-stroked-button (click)="handleDownloadBookings($event)">
+      Download das reservas
+    </button>
+
+    <input
+      #fileInput
+      type="file"
+      accept=".xlsx"
+      style="display: none"
+      (change)="handleUploadBookings($event)"
+    />
+
+    <button mat-stroked-button (click)="fileInput.click()">
+      Upload das reservas
+    </button>
   </div>
 
   <!-- Tabela de Reservas -->
   <div class="reservas-tabela">
-    <table mat-table [dataSource]="reservas" class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
       <ng-container matColumnDef="first_name">
-        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort first_name name"
+        >
+          Nome
+        </th>
         <td mat-cell *matCellDef="let reserva">{{ reserva.first_name }}</td>
       </ng-container>
 
       <ng-container matColumnDef="last_name">
-        <th mat-header-cell *matHeaderCellDef>Data da Reserva</th>
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by last_name"
+        >
+          Sobrenome
+        </th>
         <td mat-cell *matCellDef="let reserva">{{ reserva.last_name }}</td>
       </ng-container>
 
       <ng-container matColumnDef="birthday">
         <th mat-header-cell *matHeaderCellDef>Data de nascimento</th>
-        <td mat-cell *matCellDef="let reserva">{{ reserva.birthday }}</td>
+        <td mat-cell *matCellDef="let reserva">
+          {{ reserva.birthday | date : "dd/MM/yyyy" }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="document">
@@ -35,8 +59,37 @@
         <td mat-cell *matCellDef="let reserva">{{ reserva.document }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="departure_date">
+        <th mat-header-cell *matHeaderCellDef>Data de partida</th>
+        <td mat-cell *matCellDef="let reserva">
+          {{ reserva.departure_date | date : "dd/MM/yyyy" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="departure_iata">
+        <th mat-header-cell *matHeaderCellDef>Partida</th>
+        <td mat-cell *matCellDef="let reserva">{{ reserva.departure_iata }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="arrival_iata">
+        <th mat-header-cell *matHeaderCellDef>Chegada</th>
+        <td mat-cell *matCellDef="let reserva">{{ reserva.arrival_iata }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="arrival_date">
+        <th mat-header-cell *matHeaderCellDef>Data de chegada</th>
+        <td mat-cell *matCellDef="let reserva">
+          {{ reserva.arrival_date | date : "dd/MM/yyyy" }}
+        </td>
+      </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    <mat-paginator
+      [pageSizeOptions]="[2, 5, 10, 20]"
+      showFirstLastButtons
+      aria-label="Select page of periodic elements"
+    >
+    </mat-paginator>
   </div>
 </div>

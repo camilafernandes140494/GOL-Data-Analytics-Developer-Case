@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { HttpParams } from '@angular/common/http';
 
 export interface Booking {
   first_name: string;
@@ -29,8 +30,10 @@ export class BookingService {
   // Botão	Upload das reservas	POST /api/v1/booking/file/upload
   // Tabela	Reservas	GET /api/v1/booking
 
-  getBookings() {
-    return this.apiService.get<BookingResponse>('/api/v1/booking');
+  getBookings(params: Pick<BookingResponse, 'limit'>) {
+    return this.apiService.get<BookingResponse>(
+      `/api/v1/booking?limit=${params.limit}`
+    );
   }
 
   createBooking(bookingData: Booking) {
@@ -42,6 +45,8 @@ export class BookingService {
   }
 
   downloadBookings() {
-    return this.apiService.get('/api/v1/booking/file/download');
+    return this.apiService.get<Blob>('/api/v1/booking/file/download', {
+      responseType: 'blob' as 'json', // importante!
+    });
   }
 }
