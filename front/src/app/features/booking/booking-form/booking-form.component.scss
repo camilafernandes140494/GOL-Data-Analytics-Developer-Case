@@ -38,14 +38,24 @@
 }
 
 .button-save {
-  background-color: #ff5e00;
+  background-color: #ff5e00 !important;
   color: white !important;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:disabled {
-    background-color: #ffc299;
-    color: white;
+    background-color: #ffc299 !important;
+    color: white !important;
     cursor: not-allowed;
   }
+}
+.button-row {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 16px;
+}
+
+::ng-deep .custom-spinner circle {
+  stroke: #ff5e00;
 }

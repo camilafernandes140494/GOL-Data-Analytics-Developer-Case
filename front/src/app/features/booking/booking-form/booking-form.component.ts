@@ -21,6 +21,8 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-booking-form',
@@ -36,6 +38,7 @@ import { MatCardModule } from '@angular/material/card';
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './booking-form.component.html',
   styleUrls: ['./booking-form.component.scss'],
@@ -44,13 +47,15 @@ import { MatCardModule } from '@angular/material/card';
 export class BookingFormComponent implements OnInit {
   myControl = new FormControl('');
   bookingForm: FormGroup;
+  isLoading: boolean = false;
 
   options: string[] = AIRPORT_CODES;
-  filteredOptions!: Observable<string[]>; // Adicionado ! para garantir a inicialização
+  filteredOptions!: Observable<string[]>;
 
   constructor(
     private bookingService: BookingService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
     // Criando o formulário reativo
     this.bookingForm = new FormGroup({
@@ -82,28 +87,32 @@ export class BookingFormComponent implements OnInit {
 
   handleCreateBooking(event: Event) {
     event.preventDefault();
-
+    this.isLoading = true;
     if (this.bookingForm.valid) {
       const bookingData = this.bookingForm.value;
 
-      this.bookingService.createBooking(bookingData).subscribe(
-        (response) => {
+      this.bookingService.createBooking(bookingData).subscribe({
+        next: () => {
           this.snackBar.open('Reserva criada com sucesso!', '', {
             duration: 3000,
             horizontalPosition: 'right',
             verticalPosition: 'top',
             panelClass: ['snackbar-success'],
           });
+          this.isLoading = false;
+          this.bookingForm.reset();
+          this.router.navigate(['/booking']);
         },
-        (error) => {
+        error: () => {
           this.snackBar.open('Ocorreu um erro ao tentar reservar', '', {
             duration: 3000,
             horizontalPosition: 'right',
             verticalPosition: 'top',
             panelClass: ['snackbar-error'],
           });
-        }
-      );
+          this.isLoading = false;
+        },
+      });
     } else {
       this.snackBar.open(
         'Por favor, preencha todos os campos corretamente.',
@@ -115,6 +124,7 @@ export class BookingFormComponent implements OnInit {
           panelClass: ['snackbar-warning'],
         }
       );
+      this.isLoading = false;
     }
   }
 }

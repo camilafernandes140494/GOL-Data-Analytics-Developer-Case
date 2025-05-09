@@ -4,7 +4,11 @@
     [description]="'Preencha os dados da reserva'"
     [showBackButton]="true"
   />
-  <div class="div-form">
+  <form
+    [formGroup]="bookingForm"
+    (ngSubmit)="handleCreateBooking($event)"
+    class="div-form"
+  >
     <mat-card appearance="outlined" class="card-center">
       <mat-card-content [formGroup]="bookingForm" class="card-content-center">
         <mat-form-field appearance="outline">
@@ -116,12 +120,19 @@
           mat-stroked-button
           color="primary"
           type="submit"
-          [disabled]="bookingForm.invalid"
+          [disabled]="bookingForm.invalid || isLoading"
           class="button-save"
         >
-          Salvar
-        </button></mat-card-content
-      >
+          <div class="button-row">
+            <mat-spinner
+              *ngIf="isLoading"
+              diameter="20"
+              class="custom-spinner"
+            ></mat-spinner>
+            <span>Salvar</span>
+          </div>
+        </button>
+      </mat-card-content>
     </mat-card>
-  </div>
+  </form>
 </div>

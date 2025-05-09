@@ -64,48 +64,47 @@
       </ng-container>
 
       <ng-container matColumnDef="last_name">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header
-          sortActionDescription="Sort by last_name"
-        >
-          Sobrenome
-        </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sobrenome</th>
         <td mat-cell *matCellDef="let reserva">{{ reserva.last_name }}</td>
       </ng-container>
 
       <ng-container matColumnDef="birthday">
-        <th mat-header-cell *matHeaderCellDef>Data de nascimento</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Data de nascimento
+        </th>
         <td mat-cell *matCellDef="let reserva">
           {{ reserva.birthday | date : "dd/MM/yyyy" }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="document">
-        <th mat-header-cell *matHeaderCellDef>Documento</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Documento</th>
         <td mat-cell *matCellDef="let reserva">{{ reserva.document }}</td>
       </ng-container>
 
       <ng-container matColumnDef="departure_date">
-        <th mat-header-cell *matHeaderCellDef>Data de partida</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Data de partida
+        </th>
         <td mat-cell *matCellDef="let reserva">
           {{ reserva.departure_date | date : "dd/MM/yyyy" }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="departure_iata">
-        <th mat-header-cell *matHeaderCellDef>Partida</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Partida</th>
         <td mat-cell *matCellDef="let reserva">{{ reserva.departure_iata }}</td>
       </ng-container>
 
       <ng-container matColumnDef="arrival_iata">
-        <th mat-header-cell *matHeaderCellDef>Chegada</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Chegada</th>
         <td mat-cell *matCellDef="let reserva">{{ reserva.arrival_iata }}</td>
       </ng-container>
 
       <ng-container matColumnDef="arrival_date">
-        <th mat-header-cell *matHeaderCellDef>Data de chegada</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Data de chegada
+        </th>
         <td mat-cell *matCellDef="let reserva">
           {{ reserva.arrival_date | date : "dd/MM/yyyy" }}
         </td>
