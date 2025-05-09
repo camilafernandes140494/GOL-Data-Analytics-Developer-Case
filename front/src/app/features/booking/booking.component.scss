@@ -11,19 +11,9 @@
   gap: 16px;
 }
 
-.filter-row {
-  display: flex;
-  justify-content: center;
-  padding-right: 16px;
-  padding-left: 16px;
-  padding-bottom: 2px;
-  padding-top: 14px;
-  border-radius: 16px;
-  background-color: #f5f5f5; /* Cor de fundo mais suave */
-}
-
 .full-width {
-  width: 100%; /* Faz o input ocupar a tela inteira */
+  width: 100%;
+  margin-top: 16px;
 }
 
 input-full-width {
@@ -31,25 +21,21 @@ input-full-width {
 }
 
 .material-symbols-outlined {
-  color: #9e9e9e; /* Cor do ícone quando não está clicado (cinza) */
+  color: gray;
 }
 
-button.mat-icon-button {
-  padding: 0; /* Remove o padding para o ícone se alinhar corretamente */
+/* Quando o input estiver em foco (ativo) */
+mat-form-field.mat-focused .material-symbols-outlined {
+  color: #005cbb; /* A cor que você deseja quando o input estiver ativo */
 }
 
-/* Cor do botão e do ícone ao clicar */
-button.mat-icon-button:active .material-symbols-outlined,
-button.mat-icon-button:hover .material-symbols-outlined {
-  color: #ff9800; /* Cor laranja ao clicar ou passar o mouse */
+/* Quando o ícone for passado por cima (hover) */
+.material-symbols-outlined:hover {
+  color: #005cbb; /* A cor que você deseja quando passar o mouse sobre o ícone */
 }
 
-/* Personalizando o outline do input */
-mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline {
-  border-color: #ff9800; /* Cor do outline laranja */
-}
-
-/* Cor do label quando o input está em foco */
-mat-form-field.mat-focused .mat-label {
-  color: #ff9800; /* Cor do label laranja quando focado */
+.created-booking {
+  background-color: #ff5e00;
+  color: white !important;
+  cursor: pointer;
 }

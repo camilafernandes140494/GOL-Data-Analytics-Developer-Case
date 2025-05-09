@@ -1,8 +1,5 @@
 <div class="container">
-  <div class="button-row">
-    <button mat-flat-button (click)="handleCreateBooking($event)" type="button">
-      Cadastrar uma reserva
-    </button>
+  <app-header [title]="'Reservas'">
     <button mat-stroked-button (click)="handleDownloadBookings($event)">
       Download das reservas
     </button>
@@ -17,19 +14,39 @@
     <button mat-stroked-button (click)="fileInput.click()">
       Upload das reservas
     </button>
-  </div>
+    <a mat-flat-button href="/create-booking" class="created-booking"
+      >Cadastrar uma reserva</a
+    >
+  </app-header>
 
-  <!-- Filtro para a tabela -->
+  <!-- <div class="button-row">
+    <button mat-stroked-button (click)="handleDownloadBookings($event)">
+      Download das reservas
+    </button>
 
-  <div class="filter-row">
-    <mat-form-field class="full-width">
-      <mat-label>Pesquisar</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Pesquisar" />
-      <button mat-icon-button matSuffix (click)="applyFilter($event)">
-        <span class="material-symbols-outlined">search</span>
-      </button>
-    </mat-form-field>
-  </div>
+    <input
+      #fileInput
+      type="file"
+      accept=".xlsx"
+      style="display: none"
+      (change)="handleUploadBookings($event)"
+    />
+    <button mat-stroked-button (click)="fileInput.click()">
+      Upload das reservas
+    </button>
+  </div> -->
+
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Pesquisar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Pesquisar" />
+        <button mat-icon-button matSuffix (click)="applyFilter($event)">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
 
   <!-- Tabela de Reservas -->
   <div class="reservas-tabela">

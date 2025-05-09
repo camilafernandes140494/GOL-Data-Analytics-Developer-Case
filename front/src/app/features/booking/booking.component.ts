@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,9 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Booking, BookingResponse, BookingService } from './booking.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { HeaderComponent } from '../../shared/components/header/header.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-booking',
@@ -20,6 +23,9 @@ import { MatSort } from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSort,
+    HeaderComponent,
+    ReactiveFormsModule,
+    MatCardModule,
   ],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss'],
@@ -40,7 +46,10 @@ export class BookingComponent {
     'arrival_iata',
     'arrival_date',
   ];
-  constructor(private bookingService: BookingService) {}
+  constructor(
+    private bookingService: BookingService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     // Chama o método getBookings ao inicializar o componente
@@ -82,36 +91,6 @@ export class BookingComponent {
       );
   }
 
-  isLoading = false;
-  handleCreateBooking(event: Event) {
-    event.preventDefault();
-    this.isLoading = true;
-    // Criar o objeto bookingData com os dados do formulário
-    const bookingData: Booking = {
-      first_name: 'bla lsdas',
-      last_name: 'ggfhgf', // Este valor pode ser dinâmico ou fixo
-      birthday: '1990-01-01', // Use o valor real ou adicione um campo para capturá-lo
-      document: '123456789', // Valor fixo para o exemplo
-      departure_date: '2025-06-01', // Defina os valores conforme necessário
-      departure_iata: 'JFK',
-      arrival_iata: 'LAX',
-      arrival_date: '2025-06-01',
-    };
-
-    // Chamar o serviço para criar a reserva
-    this.bookingService.createBooking(bookingData).subscribe(
-      (response) => {
-        this.mensagem = `Reserva de ${this.nome} criada com sucesso!`;
-        console.log(response);
-      },
-      (error) => {
-        this.mensagem = `Erro ao criar a reserva de ${this.nome}.`;
-        console.error(error);
-      }
-    );
-    this.isLoading = false;
-  }
-
   handleDownloadBookings(event: Event) {
     event.preventDefault();
 
@@ -138,10 +117,21 @@ export class BookingComponent {
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
+
+        this.snackBar.open('Download completo', '', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-success'],
+        });
       },
       (error) => {
-        this.mensagem = `Erro ao fazer download das reservas.`;
-        console.error(error);
+        this.snackBar.open('Erro ao fazer download das reservas.', '', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-error'],
+        });
       }
     );
   }

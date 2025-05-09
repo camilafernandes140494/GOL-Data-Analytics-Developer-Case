@@ -1,0 +1,16 @@
+<div class="header-container mat-elevation-z2">
+  <div class="header-left">
+    <button *ngIf="showBackButton" mat-icon-button (click)="goBack()">
+      <span class="material-symbols-outlined" mat-icon-button>arrow_back</span>
+    </button>
+
+    <div class="header-title">
+      <h2>{{ title }}</h2>
+      <p *ngIf="description">{{ description }}</p>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <ng-content></ng-content>
+  </div>
+</div>

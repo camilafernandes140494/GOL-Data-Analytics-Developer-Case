@@ -1,0 +1,127 @@
+<div class="container">
+  <app-header
+    [title]="'Cadastrar Reserva'"
+    [description]="'Preencha os dados da reserva'"
+    [showBackButton]="true"
+  />
+  <div class="div-form">
+    <mat-card appearance="outlined" class="card-center">
+      <mat-card-content [formGroup]="bookingForm" class="card-content-center">
+        <mat-form-field appearance="outline">
+          <mat-label>Primeiro nome</mat-label>
+          <input matInput type="text" formControlName="first_name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Sobrenome</mat-label>
+          <input matInput type="text" formControlName="last_name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Data de nascimento</mat-label>
+          <input
+            matInput
+            [matDatepicker]="birthdayPicker"
+            formControlName="birthday"
+            (click)="birthdayPicker.open()"
+            required
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="birthdayPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #birthdayPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Documento</mat-label>
+          <input matInput type="text" formControlName="document" required />
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Data da viagem de ida</mat-label>
+            <input
+              matInput
+              [matDatepicker]="departurePicker"
+              formControlName="departure_date"
+              (click)="departurePicker.open()"
+              required
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="departurePicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #departurePicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Data da viagem de volta</mat-label>
+            <input
+              matInput
+              [matDatepicker]="arrivalPicker"
+              formControlName="arrival_date"
+              (click)="arrivalPicker.open()"
+              required
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="arrivalPicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #arrivalPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Saindo de</mat-label>
+            <input
+              type="text"
+              placeholder="AAL"
+              aria-label="Saindo de"
+              matInput
+              [matAutocomplete]="auto"
+              formControlName="departure_iata"
+            />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let option of filteredOptions | async"
+                [value]="option"
+                >{{ option }}</mat-option
+              >
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Indo para</mat-label>
+            <input
+              type="text"
+              placeholder="AAN"
+              aria-label="Indo para"
+              matInput
+              [matAutocomplete]="auto"
+              formControlName="arrival_iata"
+            />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let option of filteredOptions | async"
+                [value]="option"
+                >{{ option }}</mat-option
+              >
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <button
+          mat-stroked-button
+          color="primary"
+          type="submit"
+          [disabled]="bookingForm.invalid"
+          class="button-save"
+        >
+          Salvar
+        </button></mat-card-content
+      >
+    </mat-card>
+  </div>
+</div>
