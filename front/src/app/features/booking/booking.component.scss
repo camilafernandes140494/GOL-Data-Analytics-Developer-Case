@@ -7,7 +7,8 @@
 
 .button-row {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: row;
   gap: 16px;
 }
 
@@ -22,6 +23,10 @@ input-full-width {
 
 .material-symbols-outlined {
   color: gray;
+}
+
+::ng-deep .custom-spinner circle {
+  stroke: #ff5e00;
 }
 
 /* Quando o input estiver em foco (ativo) */

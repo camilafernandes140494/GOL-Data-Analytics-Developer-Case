@@ -6,11 +6,14 @@
       class="button-outlined"
       [disabled]="isLoadingDownloadBookings"
     >
-      <span>Download das reservas</span>
-      <mat-spinner
-        *ngIf="isLoadingDownloadBookings"
-        diameter="20"
-      ></mat-spinner>
+      <div class="button-row">
+        <mat-spinner
+          *ngIf="isLoadingDownloadBookings"
+          diameter="20"
+          class="custom-spinner"
+        ></mat-spinner>
+        <span>Download das reservas</span>
+      </div>
     </button>
 
     <input
@@ -24,8 +27,16 @@
       mat-stroked-button
       (click)="fileInput.click()"
       class="button-outlined"
+      [disabled]="isLoadingUploadBookings"
     >
-      Upload das reservas
+      <div class="button-row">
+        <mat-spinner
+          *ngIf="isLoadingUploadBookings"
+          diameter="20"
+          class="custom-spinner"
+        ></mat-spinner>
+        <span>Upload das reservas</span>
+      </div>
     </button>
     <a mat-flat-button href="/create-booking" class="created-booking"
       >Cadastrar uma reserva</a
@@ -105,10 +116,20 @@
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" [attr.colspan]="displayedColumns.length">
           <div class="no-items-found" style="text-align: center">
-            <mat-label class="no-items-found-text"
+            <mat-spinner
+              *ngIf="isLoadingBookings"
+              diameter="40"
+              class="custom-spinner"
+            ></mat-spinner>
+            <mat-label *ngIf="!isLoadingBookings" class="no-items-found-text"
               >Nenhum item foi encontrado.</mat-label
             >
-            <button mat-button class="no-items-found-button">
+            <button
+              mat-button
+              *ngIf="!isLoadingBookings"
+              class="no-items-found-button"
+              (click)="getBookings(0, 10)"
+            >
               Tente novamente
             </button>
           </div>

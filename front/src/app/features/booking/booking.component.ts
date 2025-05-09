@@ -34,9 +34,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class BookingComponent {
   nome: string = '';
-  mensagem: string = '';
   isLoadingDownloadBookings: boolean = false;
-
+  isLoadingUploadBookings: boolean = false;
+  isLoadingBookings: boolean = false;
   // Dados de exemplo para a tabela
   dataSource = new MatTableDataSource<Booking>();
 
@@ -78,21 +78,27 @@ export class BookingComponent {
   }
 
   getBookings(pageIndex: number = 0, pageSize: number = 10) {
+    this.isLoadingBookings = true;
     const offset = pageIndex * pageSize;
-
     this.bookingService
       .getBookings({
         limit: pageSize,
       })
-      .subscribe(
-        (response: BookingResponse) => {
+      .subscribe({
+        next: (response: BookingResponse) => {
           this.dataSource.data = response.data;
+          this.isLoadingBookings = false;
         },
-        (error) => {
-          this.mensagem = `Erro ao carregar as reservas.`;
-          console.error(error);
-        }
-      );
+        error: () => {
+          this.snackBar.open('Erro ao carregar as reservas.', '', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-error'],
+          });
+          this.isLoadingBookings = false;
+        },
+      });
   }
 
   handleDownloadBookings(event: Event) {
@@ -138,7 +144,7 @@ export class BookingComponent {
           panelClass: ['snackbar-success'],
         });
       },
-      error: (error) => {
+      error: () => {
         // Exibir mensagem de erro
         this.snackBar.open('Erro ao fazer download das reservas.', '', {
           duration: 3000,
@@ -146,9 +152,6 @@ export class BookingComponent {
           verticalPosition: 'top',
           panelClass: ['snackbar-error'],
         });
-      },
-      complete: () => {
-        // Resetando o estado de loading
         this.isLoadingDownloadBookings = false;
       },
     });
@@ -157,6 +160,7 @@ export class BookingComponent {
   selectedFile: File | null = null;
 
   handleUploadBookings(event: Event) {
+    this.isLoadingUploadBookings = true;
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
       this.selectedFile = input.files[0];
@@ -164,15 +168,26 @@ export class BookingComponent {
       const formData = new FormData();
       formData.append('content', this.selectedFile);
 
-      this.bookingService.uploadBookings(formData).subscribe(
-        () => {
-          this.mensagem = 'Upload realizado com sucesso!';
+      this.bookingService.uploadBookings(formData).subscribe({
+        next: () => {
+          this.snackBar.open('Upload completo', '', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success'],
+          });
+          this.isLoadingUploadBookings = false;
         },
-        (error) => {
-          this.mensagem = 'Erro ao fazer upload das reservas.';
-          console.error(error);
-        }
-      );
+        error: () => {
+          this.snackBar.open('Erro ao fazer upload das reservas.', '', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-error'],
+          });
+          this.isLoadingUploadBookings = false;
+        },
+      });
     }
   }
 
