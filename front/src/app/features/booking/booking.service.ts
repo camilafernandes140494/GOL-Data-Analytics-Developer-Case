@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { HttpParams } from '@angular/common/http';
 
 export interface Booking {
   first_name: string;
