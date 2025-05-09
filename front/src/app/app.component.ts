@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +14,7 @@ import { Router, RouterOutlet } from '@angular/router';
     MatListModule,
     MatIconModule,
     MatButtonModule,
+    CommonModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -20,15 +22,20 @@ import { Router, RouterOutlet } from '@angular/router';
 export class AppComponent {
   constructor(private router: Router) {}
 
+  activeTab: string = '';
+
   navigateToDashboard() {
     this.router.navigate(['/dashboard']);
+    this.activeTab = 'dashboard';
   }
 
   navigateToBooking() {
     this.router.navigate(['/booking']);
+    this.activeTab = 'booking';
   }
   ngOnInit() {
     const currentUrl = window.location.href;
-    console.log(currentUrl);
+    const lastSegment = currentUrl.split('/').pop() ?? '';
+    this.activeTab = lastSegment.includes('booking') ? 'booking' : 'dashboard';
   }
 }

@@ -5,20 +5,26 @@
 
 <mat-drawer-container class="custom-container">
   <mat-drawer mode="side" opened>
-    <!-- Dashboard Button -->
     <mat-nav-list>
-      <mat-list-item (click)="navigateToDashboard()">
-        <div class="mat-list-item">
-          <mat-icon>dashboard</mat-icon>
-          <span>Dashboard</span>
-        </div>
-      </mat-list-item>
-
       <!-- Reservas de voos Button -->
-      <mat-list-item (click)="navigateToBooking()">
+      <mat-list-item
+        (click)="navigateToBooking()"
+        [ngClass]="{ active: activeTab === 'booking' }"
+      >
         <div class="mat-list-item">
           <mat-icon>flight_takeoff</mat-icon>
           <span>Reservas de voos</span>
+        </div>
+      </mat-list-item>
+
+      <!-- Dashboard Button -->
+      <mat-list-item
+        (click)="navigateToDashboard()"
+        [ngClass]="{ active: activeTab === 'dashboard' }"
+      >
+        <div class="mat-list-item">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
         </div>
       </mat-list-item>
     </mat-nav-list>
