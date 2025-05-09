@@ -46,7 +46,7 @@ export class BookingService {
 
   downloadBookings() {
     return this.apiService.get<Blob>('/api/v1/booking/file/download', {
-      responseType: 'blob' as 'json', // importante!
+      responseType: 'blob',
     });
   }
 }

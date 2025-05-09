@@ -35,7 +35,47 @@ mat-form-field.mat-focused .material-symbols-outlined {
 }
 
 .created-booking {
-  background-color: #ff5e00;
+  background-color: #ff5e00 !important;
   color: white !important;
   cursor: pointer;
+}
+
+.no-items-found {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 2rem;
+}
+
+.no-items-found-text {
+  font-style: italic;
+  color: #5a5a5a;
+}
+
+.no-items-found-button {
+  color: #ff5e00 !important;
+  &:hover {
+    background-color: #fadabd;
+  }
+}
+
+.no-items-found-text {
+  font-style: italic;
+  color: #5a5a5a;
+}
+
+.button-outlined {
+  color: #ff5e00 !important;
+  border: 1px solid #ff5e00 !important;
+  &:hover {
+    background-color: #fadabd;
+  }
+  &:disabled {
+    color: #ffc299 !important;
+    border: 1px solid #ffc299 !important;
+    cursor: not-allowed;
+  }
 }

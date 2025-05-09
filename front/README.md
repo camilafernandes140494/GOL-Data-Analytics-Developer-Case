@@ -1,6 +1,6 @@
 # Frontend
 
-"WIP: working on screen layout"
+WIP: working on screen layout
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
 

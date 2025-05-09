@@ -11,6 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-booking',
@@ -26,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
     HeaderComponent,
     ReactiveFormsModule,
     MatCardModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss'],
@@ -33,6 +35,8 @@ import { MatCardModule } from '@angular/material/card';
 export class BookingComponent {
   nome: string = '';
   mensagem: string = '';
+  isLoadingDownloadBookings: boolean = false;
+
   // Dados de exemplo para a tabela
   dataSource = new MatTableDataSource<Booking>();
 
@@ -93,15 +97,20 @@ export class BookingComponent {
 
   handleDownloadBookings(event: Event) {
     event.preventDefault();
+    this.isLoadingDownloadBookings = true;
 
-    this.bookingService.downloadBookings().subscribe(
-      (response: Blob) => {
+    this.bookingService.downloadBookings().subscribe({
+      next: (response: Blob) => {
+        // Criação do Blob com o conteúdo recebido
         const blob = new Blob([response], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         });
-        const url = window.URL.createObjectURL(blob);
 
+        // Criação do link para o download
+        const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
+
+        // Criação do nome do arquivo com timestamp
         const now = new Date();
         const pad = (n: number) => n.toString().padStart(2, '0');
         const timestamp = `${now.getFullYear()}-${pad(
@@ -111,13 +120,17 @@ export class BookingComponent {
         )}`;
         const fileName = `reservas-${timestamp}.xlsx`;
 
+        // Configuração do link para download
         a.href = url;
         a.download = fileName;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+
+        // Revogar URL para liberar recursos
         window.URL.revokeObjectURL(url);
 
+        // Exibir mensagem de sucesso
         this.snackBar.open('Download completo', '', {
           duration: 3000,
           horizontalPosition: 'right',
@@ -125,15 +138,20 @@ export class BookingComponent {
           panelClass: ['snackbar-success'],
         });
       },
-      (error) => {
+      error: (error) => {
+        // Exibir mensagem de erro
         this.snackBar.open('Erro ao fazer download das reservas.', '', {
           duration: 3000,
           horizontalPosition: 'right',
           verticalPosition: 'top',
           panelClass: ['snackbar-error'],
         });
-      }
-    );
+      },
+      complete: () => {
+        // Resetando o estado de loading
+        this.isLoadingDownloadBookings = false;
+      },
+    });
   }
 
   selectedFile: File | null = null;

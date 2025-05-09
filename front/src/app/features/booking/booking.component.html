@@ -1,7 +1,16 @@
 <div class="container">
   <app-header [title]="'Reservas'">
-    <button mat-stroked-button (click)="handleDownloadBookings($event)">
-      Download das reservas
+    <button
+      mat-stroked-button
+      (click)="handleDownloadBookings($event)"
+      class="button-outlined"
+      [disabled]="isLoadingDownloadBookings"
+    >
+      <span>Download das reservas</span>
+      <mat-spinner
+        *ngIf="isLoadingDownloadBookings"
+        diameter="20"
+      ></mat-spinner>
     </button>
 
     <input
@@ -11,30 +20,17 @@
       style="display: none"
       (change)="handleUploadBookings($event)"
     />
-    <button mat-stroked-button (click)="fileInput.click()">
+    <button
+      mat-stroked-button
+      (click)="fileInput.click()"
+      class="button-outlined"
+    >
       Upload das reservas
     </button>
     <a mat-flat-button href="/create-booking" class="created-booking"
       >Cadastrar uma reserva</a
     >
   </app-header>
-
-  <!-- <div class="button-row">
-    <button mat-stroked-button (click)="handleDownloadBookings($event)">
-      Download das reservas
-    </button>
-
-    <input
-      #fileInput
-      type="file"
-      accept=".xlsx"
-      style="display: none"
-      (change)="handleUploadBookings($event)"
-    />
-    <button mat-stroked-button (click)="fileInput.click()">
-      Upload das reservas
-    </button>
-  </div> -->
 
   <mat-card appearance="outlined">
     <mat-card-content>
@@ -105,6 +101,19 @@
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          <div class="no-items-found" style="text-align: center">
+            <mat-label class="no-items-found-text"
+              >Nenhum item foi encontrado.</mat-label
+            >
+            <button mat-button class="no-items-found-button">
+              Tente novamente
+            </button>
+          </div>
+        </td>
+      </tr>
     </table>
     <mat-paginator
       [pageSizeOptions]="[5, 10, 20]"
