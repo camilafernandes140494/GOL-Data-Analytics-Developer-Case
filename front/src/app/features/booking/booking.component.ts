@@ -57,29 +57,27 @@ export class BookingComponent {
 
   ngOnInit() {
     // Chama o método getBookings ao inicializar o componente
-    this.getBookings();
+    this.loadBookings();
   }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  totalCount = 0;
 
+  ngAfterViewInit() {
     this.paginator.page.subscribe(() => {
-      this.getBookings(this.paginator.pageIndex, this.paginator.pageSize);
+      this.loadBookings(this.paginator.pageSize);
     });
 
     this.sort.sortChange.subscribe(() => {
-      // Resetar para a primeira página ao ordenar
       this.paginator.pageIndex = 0;
-      this.getBookings(this.paginator.pageIndex, this.paginator.pageSize);
+      this.loadBookings(this.paginator.pageSize);
     });
   }
 
-  getBookings(pageIndex: number = 0, pageSize: number = 10) {
+  loadBookings(pageSize: number = 5) {
     this.isLoadingBookings = true;
-    const offset = pageIndex * pageSize;
+
     this.bookingService
       .getBookings({
         limit: pageSize,
@@ -87,6 +85,7 @@ export class BookingComponent {
       .subscribe({
         next: (response: BookingResponse) => {
           this.dataSource.data = response.data;
+          this.totalCount = response.count;
           this.isLoadingBookings = false;
         },
         error: () => {
