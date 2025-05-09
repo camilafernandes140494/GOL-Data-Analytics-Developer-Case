@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Booking, BookingResponse, BookingService } from './booking.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
@@ -23,11 +23,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSort,
     HeaderComponent,
     ReactiveFormsModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatSortModule,
   ],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss'],
@@ -63,28 +63,29 @@ export class BookingComponent {
   @ViewChild(MatSort) sort!: MatSort;
 
   totalCount = 0;
-
+  limitCount = 5;
   ngAfterViewInit() {
     this.paginator.page.subscribe(() => {
-      this.loadBookings(this.paginator.pageSize);
+      this.limitCount = this.paginator.pageSize;
+      this.loadBookings(this.paginator.pageIndex, this.paginator.pageSize);
     });
 
     this.sort.sortChange.subscribe(() => {
       this.paginator.pageIndex = 0;
-      this.loadBookings(this.paginator.pageSize);
+      this.loadBookings(this.paginator.pageIndex, this.paginator.pageSize);
     });
   }
 
-  loadBookings(pageSize: number = 5) {
+  loadBookings(pageIndex: number = 0, pageSize: number = 5) {
     this.isLoadingBookings = true;
 
     this.bookingService
       .getBookings({
-        limit: pageSize,
+        limit: pageSize * (pageIndex + 1),
       })
       .subscribe({
         next: (response: BookingResponse) => {
-          this.dataSource.data = response.data;
+          this.dataSource.data = response.data.slice(-pageSize);
           this.totalCount = response.count;
           this.isLoadingBookings = false;
         },
@@ -193,6 +194,28 @@ export class BookingComponent {
   // Função para aplicar o filtro na tabela
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+
+    this.bookingService
+      .getBookings({
+        limit: this.limitCount,
+      })
+      .subscribe({
+        next: (response: BookingResponse) => {
+          this.dataSource.data = response.data.slice(-this.limitCount);
+          this.totalCount = response.count;
+          this.isLoadingBookings = false;
+        },
+        error: () => {
+          this.snackBar.open('Erro ao carregar as reservas.', '', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-error'],
+          });
+          this.isLoadingBookings = false;
+        },
+      });
+
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
