@@ -6,6 +6,7 @@ header {
   background-color: #f4f4f4; /* Cor de fundo (opcional, pode mudar) */
   max-height: 244px;
   line-height: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 header img {
@@ -20,7 +21,32 @@ header p {
   color: #333; /* Cor do texto */
 }
 
-// div {
-//   padding-left: 10rem;
-//   padding-right: 10rem;
-// }
+.sidenav {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.custom-container {
+  background-color: white;
+}
+
+mat-drawer-container {
+  height: 100vh; /* ocupa 100% da altura da viewport */
+}
+
+mat-drawer {
+  background-color: #fafafa;
+  border-radius: 0%;
+  width: auto;
+  border-right: 1px solid #ccc;
+}
+
+.mat-list-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  margin: 20px;
+}

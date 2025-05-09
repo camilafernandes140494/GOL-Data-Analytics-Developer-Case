@@ -3,6 +3,26 @@
   <p>GOL Data Analytics | Developer Case - Camila Fernandes</p>
 </header>
 
-<div>
-  <router-outlet />
-</div>
+<mat-drawer-container class="custom-container">
+  <mat-drawer mode="side" opened>
+    <!-- Dashboard List Item -->
+    <mat-list-item role="listitem">
+      <div class="mat-list-item">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </div>
+    </mat-list-item>
+
+    <!-- Reservas de voos List Item -->
+    <mat-list-item role="listitem">
+      <div class="mat-list-item">
+        <mat-icon>flight_takeoff</mat-icon>
+        <span>Reservas de voos</span>
+      </div>
+    </mat-list-item>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <router-outlet />
+  </mat-drawer-content>
+</mat-drawer-container>

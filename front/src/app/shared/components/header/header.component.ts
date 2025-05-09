@@ -2,10 +2,11 @@ import { Component, Input } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, MatButtonModule],
+  imports: [CommonModule, MatButtonModule, MatListModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
