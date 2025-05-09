@@ -5,24 +5,26 @@
 
 <mat-drawer-container class="custom-container">
   <mat-drawer mode="side" opened>
-    <!-- Dashboard List Item -->
-    <mat-list-item role="listitem">
-      <div class="mat-list-item">
-        <mat-icon>dashboard</mat-icon>
-        <span>Dashboard</span>
-      </div>
-    </mat-list-item>
+    <!-- Dashboard Button -->
+    <mat-nav-list>
+      <mat-list-item (click)="navigateToDashboard()">
+        <div class="mat-list-item">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </div>
+      </mat-list-item>
 
-    <!-- Reservas de voos List Item -->
-    <mat-list-item role="listitem">
-      <div class="mat-list-item">
-        <mat-icon>flight_takeoff</mat-icon>
-        <span>Reservas de voos</span>
-      </div>
-    </mat-list-item>
+      <!-- Reservas de voos Button -->
+      <mat-list-item (click)="navigateToBooking()">
+        <div class="mat-list-item">
+          <mat-icon>flight_takeoff</mat-icon>
+          <span>Reservas de voos</span>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
   </mat-drawer>
 
   <mat-drawer-content>
-    <router-outlet />
+    <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>
