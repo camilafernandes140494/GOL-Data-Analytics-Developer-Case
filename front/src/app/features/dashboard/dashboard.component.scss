@@ -1,6 +1,36 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 24px;
+  gap: 32px;
+  padding: 32px;
+  margin-bottom: 100px;
+}
+
+.div-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+mat-card {
+  flex: 1 1 100%;
+  min-width: 320px;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .div-row mat-card {
+    flex: 1 1 calc(50% - 12px);
+  }
+}
+
+.graph-max {
+  height: 400px;
+  width: 100%;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
