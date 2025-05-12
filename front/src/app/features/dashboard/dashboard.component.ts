@@ -23,6 +23,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MONTHS } from '../../constants/constants';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -40,15 +41,12 @@ interface ChartItem {
     MatSelectModule,
     FormsModule,
     MatGridListModule,
-
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
-
     ReactiveFormsModule,
-
     MatProgressSpinnerModule,
     MatSortModule,
   ],
@@ -78,20 +76,7 @@ export class DashboardComponent {
     private snackBar: MatSnackBar
   ) {}
 
-  months = [
-    { value: '01', name: 'Janeiro' },
-    { value: '02', name: 'Fevereiro' },
-    { value: '03', name: 'Março' },
-    { value: '04', name: 'Abril' },
-    { value: '05', name: 'Maio' },
-    { value: '06', name: 'Junho' },
-    { value: '07', name: 'Julho' },
-    { value: '08', name: 'Agosto' },
-    { value: '09', name: 'Setembro' },
-    { value: '10', name: 'Outubro' },
-    { value: '11', name: 'Novembro' },
-    { value: '12', name: 'Dezembro' },
-  ];
+  months = MONTHS;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -162,8 +147,8 @@ export class DashboardComponent {
 
         if (this.monthSelectChartData2) {
           this.dataData2 = allData.filter((item) => {
-            const month = new Date(item.name).getMonth() + 1; // getMonth() retorna 0-11
-            const monthString = month.toString().padStart(2, '0'); // sempre com 2 dígitos
+            const month = new Date(item.name).getMonth() + 1;
+            const monthString = month.toString().padStart(2, '0');
             return monthString === this.monthSelectChartData2;
           });
         } else {
@@ -219,7 +204,6 @@ export class DashboardComponent {
       })
       .subscribe({
         next: (response: TableDataResponse) => {
-          console.log(response);
           this.dataSource.data = response.data.slice(-pageSize);
           this.totalCount = response.count;
           this.isLoadingDashboardData = false;

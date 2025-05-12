@@ -36,6 +36,8 @@ export class AppComponent {
   ngOnInit() {
     const currentUrl = window.location.href;
     const lastSegment = currentUrl.split('/').pop() ?? '';
-    this.activeTab = lastSegment.includes('booking') ? 'booking' : 'dashboard';
+    this.activeTab = lastSegment.includes('dashboard')
+      ? 'dashboard'
+      : 'booking';
   }
 }

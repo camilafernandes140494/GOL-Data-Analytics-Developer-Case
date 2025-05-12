@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Adicionar reservas por planilha</h2>
+<mat-dialog-content class="mat-typography">
+  <h3>Importe reservas com facilidade</h3>
+  <p>
+    Faça o upload de uma planilha no formato .xlsx contendo as informações de
+    voos reservados pela equipe. Automatize o processo de cadastro e economize
+    tempo.
+  </p>
+
+  <h3>Formato padronizado e eficiente</h3>
+  <p>
+    Certifique-se de que a planilha segue o modelo padrão com os dados corretos.
+    O sistema validará as informações automaticamente antes de salvar.
+  </p>
+
+  <input
+    #fileInput
+    type="file"
+    accept=".xlsx"
+    style="display: none"
+    (change)="handleUploadBookings($event)"
+  />
+  <button
+    mat-stroked-button
+    (click)="fileInput.click()"
+    class="button-outlined"
+    [disabled]="isLoadingUploadBookings"
+  >
+    Importar reservas
+  </button>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fechar</button>
+</mat-dialog-actions>

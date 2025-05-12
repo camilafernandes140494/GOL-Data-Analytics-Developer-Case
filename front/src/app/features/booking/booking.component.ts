@@ -1,4 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +17,8 @@ import { HeaderComponent } from '../../shared/components/header/header.component
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-booking',
@@ -28,14 +35,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCardModule,
     MatProgressSpinnerModule,
     MatSortModule,
+    MatDialogModule,
   ],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss'],
 })
 export class BookingComponent {
   nome: string = '';
-  isLoadingDownloadBookings: boolean = false;
-  isLoadingUploadBookings: boolean = false;
+
   isLoadingBookings: boolean = false;
   // Dados de exemplo para a tabela
   dataSource = new MatTableDataSource<Booking>();
@@ -96,6 +103,38 @@ export class BookingComponent {
       });
   }
 
+  // Função para aplicar o filtro na tabela
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  readonly dialog = inject(MatDialog);
+
+  openDialogDownloadBooking() {
+    this.dialog.open(DialogDownloadBooking);
+  }
+
+  openDialogUploadBooking() {
+    this.dialog.open(DialogUploadBooking);
+  }
+}
+
+@Component({
+  selector: 'download-booking-dialog',
+  templateUrl: 'download-booking-dialog.html',
+  styleUrls: ['./booking.component.scss'],
+  imports: [MatDialogModule, MatButtonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class DialogDownloadBooking {
+  isLoadingDownloadBookings: boolean = false;
+
+  constructor(
+    private bookingService: BookingService,
+    private snackBar: MatSnackBar
+  ) {}
+
   handleDownloadBookings(event: Event) {
     event.preventDefault();
     this.isLoadingDownloadBookings = true;
@@ -151,6 +190,21 @@ export class BookingComponent {
       },
     });
   }
+}
+
+@Component({
+  selector: 'upload-booking-dialog',
+  templateUrl: 'upload-booking-dialog.html',
+  styleUrls: ['./booking.component.scss'],
+  imports: [MatDialogModule, MatButtonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class DialogUploadBooking {
+  isLoadingUploadBookings: boolean = false;
+  constructor(
+    private bookingService: BookingService,
+    private snackBar: MatSnackBar
+  ) {}
 
   selectedFile: File | null = null;
 
@@ -184,11 +238,5 @@ export class BookingComponent {
         },
       });
     }
-  }
-
-  // Função para aplicar o filtro na tabela
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

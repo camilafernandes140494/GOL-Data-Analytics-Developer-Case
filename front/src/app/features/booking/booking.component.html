@@ -2,42 +2,20 @@
   <app-header [title]="'Reservas'">
     <button
       mat-stroked-button
-      (click)="handleDownloadBookings($event)"
+      (click)="openDialogDownloadBooking()"
       class="button-outlined"
-      [disabled]="isLoadingDownloadBookings"
     >
-      <div class="button-row">
-        <mat-spinner
-          *ngIf="isLoadingDownloadBookings"
-          diameter="20"
-          class="custom-spinner"
-        ></mat-spinner>
-        <span>Download das reservas</span>
-      </div>
+      Download das reservas
     </button>
 
-    <input
-      #fileInput
-      type="file"
-      accept=".xlsx"
-      style="display: none"
-      (change)="handleUploadBookings($event)"
-    />
     <button
       mat-stroked-button
-      (click)="fileInput.click()"
+      (click)="openDialogUploadBooking()"
       class="button-outlined"
-      [disabled]="isLoadingUploadBookings"
     >
-      <div class="button-row">
-        <mat-spinner
-          *ngIf="isLoadingUploadBookings"
-          diameter="20"
-          class="custom-spinner"
-        ></mat-spinner>
-        <span>Upload das reservas</span>
-      </div>
+      Importar reservas
     </button>
+
     <a mat-flat-button href="/create-booking" class="created-booking"
       >Cadastrar uma reserva</a
     >
@@ -56,7 +34,7 @@
   </mat-card>
 
   <!-- Tabela de Reservas -->
-  <div class="reservas-tabela">
+  <div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
       <ng-container matColumnDef="first_name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
