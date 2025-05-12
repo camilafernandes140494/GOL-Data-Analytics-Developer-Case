@@ -21,88 +21,86 @@
         </button>
       </mat-form-field>
     </mat-card-content>
+    <div>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort class="div-table">
+        <ng-container matColumnDef="first_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+          <td mat-cell *matCellDef="let reserva">{{ reserva.first_name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="last_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sobrenome</th>
+          <td mat-cell *matCellDef="let reserva">{{ reserva.last_name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="birthday">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de nascimento</th>
+          <td mat-cell *matCellDef="let reserva">
+            {{ reserva.birthday | date: 'dd/MM/yyyy' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="document">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Documento</th>
+          <td mat-cell *matCellDef="let reserva">{{ reserva.document }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="departure_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de partida</th>
+          <td mat-cell *matCellDef="let reserva">
+            {{ reserva.departure_date | date: 'dd/MM/yyyy' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="departure_iata">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Partida</th>
+          <td mat-cell *matCellDef="let reserva">{{ reserva.departure_iata }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="arrival_iata">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Chegada</th>
+          <td mat-cell *matCellDef="let reserva">{{ reserva.arrival_iata }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="arrival_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de chegada</th>
+          <td mat-cell *matCellDef="let reserva">
+            {{ reserva.arrival_date | date: 'dd/MM/yyyy' }}
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+            <div class="no-items-found" style="text-align: center">
+              <mat-spinner
+                *ngIf="isLoadingBookings"
+                diameter="40"
+                class="custom-spinner"
+              ></mat-spinner>
+              <mat-label *ngIf="!isLoadingBookings" class="no-items-found-text"
+                >Nenhum item foi encontrado.</mat-label
+              >
+              <button
+                mat-button
+                *ngIf="!isLoadingBookings"
+                class="no-items-found-button"
+                (click)="loadBookings(5)"
+              >
+                Tente novamente
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <mat-paginator
+        [length]="totalCount"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
   </mat-card>
-
-  <!-- Tabela de Reservas -->
-  <div>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-      <ng-container matColumnDef="first_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
-        <td mat-cell *matCellDef="let reserva">{{ reserva.first_name }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="last_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sobrenome</th>
-        <td mat-cell *matCellDef="let reserva">{{ reserva.last_name }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="birthday">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de nascimento</th>
-        <td mat-cell *matCellDef="let reserva">
-          {{ reserva.birthday | date: 'dd/MM/yyyy' }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="document">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Documento</th>
-        <td mat-cell *matCellDef="let reserva">{{ reserva.document }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="departure_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de partida</th>
-        <td mat-cell *matCellDef="let reserva">
-          {{ reserva.departure_date | date: 'dd/MM/yyyy' }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="departure_iata">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Partida</th>
-        <td mat-cell *matCellDef="let reserva">{{ reserva.departure_iata }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="arrival_iata">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Chegada</th>
-        <td mat-cell *matCellDef="let reserva">{{ reserva.arrival_iata }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="arrival_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de chegada</th>
-        <td mat-cell *matCellDef="let reserva">
-          {{ reserva.arrival_date | date: 'dd/MM/yyyy' }}
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-          <div class="no-items-found" style="text-align: center">
-            <mat-spinner
-              *ngIf="isLoadingBookings"
-              diameter="40"
-              class="custom-spinner"
-            ></mat-spinner>
-            <mat-label *ngIf="!isLoadingBookings" class="no-items-found-text"
-              >Nenhum item foi encontrado.</mat-label
-            >
-            <button
-              mat-button
-              *ngIf="!isLoadingBookings"
-              class="no-items-found-button"
-              (click)="loadBookings(5)"
-            >
-              Tente novamente
-            </button>
-          </div>
-        </td>
-      </tr>
-    </table>
-    <mat-paginator
-      [length]="totalCount"
-      [pageSizeOptions]="[5, 10, 20]"
-      showFirstLastButtons
-      aria-label="Select page of periodic elements"
-    >
-    </mat-paginator>
-  </div>
 </div>
