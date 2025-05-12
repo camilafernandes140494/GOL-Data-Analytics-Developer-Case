@@ -13,7 +13,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-booking',
@@ -163,7 +162,6 @@ export class DialogDownloadBooking {
         // Revogar URL para liberar recursos
         window.URL.revokeObjectURL(url);
 
-        // Exibir mensagem de sucesso
         this.snackBar.open('Download completo', '', {
           duration: 3000,
           horizontalPosition: 'right',
@@ -172,7 +170,6 @@ export class DialogDownloadBooking {
         });
       },
       error: () => {
-        // Exibir mensagem de erro
         this.snackBar.open('Erro ao fazer download das reservas.', '', {
           duration: 3000,
           horizontalPosition: 'right',

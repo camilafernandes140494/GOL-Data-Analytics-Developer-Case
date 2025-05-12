@@ -18,7 +18,7 @@
 }
 
 input-full-width {
-  width: 100%; /* Faz o form-field ocupar o máximo possível */
+  width: 100%;
 }
 
 .material-symbols-outlined {
@@ -31,7 +31,7 @@ input-full-width {
 
 /* Quando o input estiver em foco (ativo) */
 mat-form-field.mat-focused .material-symbols-outlined {
-  color: #005cbb; /* A cor que você deseja quando o input estiver ativo */
+  color: #005cbb;
 }
 
 /* Quando o ícone for passado por cima (hover) */

@@ -2,12 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import {
-  DashboardService,
-  DataItemChart,
-  DataItemTable,
-  TableDataResponse,
-} from './dashboard.service';
+import { DashboardService, DataItemTable, TableDataResponse } from './dashboard.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -24,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MONTHS } from '../../constants/constants';
+import { MatTabsModule } from '@angular/material/tabs';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -49,6 +45,7 @@ interface ChartItem {
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatSortModule,
+    MatTabsModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
