@@ -27,6 +27,9 @@ mat-card {
 .graph-max {
   height: 400px;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 mat-card-content {
@@ -37,4 +40,18 @@ mat-card-content {
 
 .table {
   padding: 24px;
+}
+
+::ng-deep .custom-spinner circle {
+  stroke: #ff5e00;
+}
+
+.no-items-found {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 2rem;
 }

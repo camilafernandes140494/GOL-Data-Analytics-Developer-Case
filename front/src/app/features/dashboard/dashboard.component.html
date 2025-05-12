@@ -17,7 +17,13 @@
           </mat-select>
         </mat-form-field>
         <div class="graph-max">
+          <mat-spinner
+            *ngIf="isLoadingChartData1"
+            diameter="60"
+            class="custom-spinner"
+          ></mat-spinner>
           <ngx-charts-bar-vertical
+            *ngIf="!isLoadingChartData1"
             [results]="dataData1"
             [xAxis]="true"
             [yAxis]="true"
@@ -49,7 +55,13 @@
           </mat-select>
         </mat-form-field>
         <div class="graph-max">
+          <mat-spinner
+            *ngIf="isLoadingChartData2"
+            diameter="60"
+            class="custom-spinner"
+          ></mat-spinner>
           <ngx-charts-bar-vertical
+            *ngIf="!isLoadingChartData2"
             [results]="dataData2"
             [xAxis]="true"
             [yAxis]="true"
@@ -71,7 +83,13 @@
         <h3>Número de passageiros por rota</h3>
 
         <div class="graph-max">
+          <mat-spinner
+            *ngIf="isLoadingChartData3"
+            diameter="60"
+            class="custom-spinner"
+          ></mat-spinner>
           <ngx-charts-bar-vertical
+            *ngIf="!isLoadingChartData3"
             [results]="dataData3"
             [xAxis]="true"
             [yAxis]="true"
