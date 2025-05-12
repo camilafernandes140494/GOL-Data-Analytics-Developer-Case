@@ -30,25 +30,23 @@ export class DashboardService {
 
   getChartData1(params: { limit?: number }) {
     return this.apiService.get<ChartDataResponse>(
-      `/api/v1/dashboard/chart/data/1?limit=${params.limit}`
+      `/api/v1/dashboard/chart/data/1?limit=${params.limit}`,
     );
   }
 
   getChartData2(params: { limit?: number }) {
     return this.apiService.get<ChartDataResponse>(
-      `/api/v1/dashboard/chart/data/2?limit=${params.limit}`
+      `/api/v1/dashboard/chart/data/2?limit=${params.limit}`,
     );
   }
 
   getChartData3(params: { limit?: number }) {
     return this.apiService.get<ChartDataResponse>(
-      `/api/v1/dashboard/chart/data/3?limit=${params.limit}`
+      `/api/v1/dashboard/chart/data/3?limit=${params.limit}`,
     );
   }
 
   getDashboardData(params: { limit?: number }) {
-    return this.apiService.get<TableDataResponse>(
-      `/api/v1/dashboard/data?limit=${params.limit}`
-    );
+    return this.apiService.get<TableDataResponse>(`/api/v1/dashboard/data?limit=${params.limit}`);
   }
 }

@@ -1,24 +1,14 @@
 <div class="container">
   <app-header [title]="'Reservas'">
-    <button
-      mat-stroked-button
-      (click)="openDialogDownloadBooking()"
-      class="button-outlined"
-    >
+    <button mat-stroked-button (click)="openDialogDownloadBooking()" class="button-outlined">
       Download das reservas
     </button>
 
-    <button
-      mat-stroked-button
-      (click)="openDialogUploadBooking()"
-      class="button-outlined"
-    >
+    <button mat-stroked-button (click)="openDialogUploadBooking()" class="button-outlined">
       Importar reservas
     </button>
 
-    <a mat-flat-button href="/create-booking" class="created-booking"
-      >Cadastrar uma reserva</a
-    >
+    <a mat-flat-button href="/create-booking" class="created-booking">Cadastrar uma reserva</a>
   </app-header>
 
   <mat-card appearance="outlined">
@@ -47,11 +37,9 @@
       </ng-container>
 
       <ng-container matColumnDef="birthday">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          Data de nascimento
-        </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de nascimento</th>
         <td mat-cell *matCellDef="let reserva">
-          {{ reserva.birthday | date : "dd/MM/yyyy" }}
+          {{ reserva.birthday | date: 'dd/MM/yyyy' }}
         </td>
       </ng-container>
 
@@ -61,11 +49,9 @@
       </ng-container>
 
       <ng-container matColumnDef="departure_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          Data de partida
-        </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de partida</th>
         <td mat-cell *matCellDef="let reserva">
-          {{ reserva.departure_date | date : "dd/MM/yyyy" }}
+          {{ reserva.departure_date | date: 'dd/MM/yyyy' }}
         </td>
       </ng-container>
 
@@ -80,11 +66,9 @@
       </ng-container>
 
       <ng-container matColumnDef="arrival_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          Data de chegada
-        </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de chegada</th>
         <td mat-cell *matCellDef="let reserva">
-          {{ reserva.arrival_date | date : "dd/MM/yyyy" }}
+          {{ reserva.arrival_date | date: 'dd/MM/yyyy' }}
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

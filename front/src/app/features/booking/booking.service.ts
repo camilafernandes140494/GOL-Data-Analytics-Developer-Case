@@ -30,9 +30,7 @@ export class BookingService {
   // Tabela	Reservas	GET /api/v1/booking
 
   getBookings(params: Pick<BookingResponse, 'limit'>) {
-    return this.apiService.get<BookingResponse>(
-      `/api/v1/booking?limit=${params.limit}`
-    );
+    return this.apiService.get<BookingResponse>(`/api/v1/booking?limit=${params.limit}`);
   }
 
   createBooking(bookingData: Booking) {

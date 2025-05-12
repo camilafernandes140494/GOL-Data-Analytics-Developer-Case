@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -59,7 +54,7 @@ export class BookingComponent {
   ];
   constructor(
     private bookingService: BookingService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -132,7 +127,7 @@ export class DialogDownloadBooking {
 
   constructor(
     private bookingService: BookingService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   handleDownloadBookings(event: Event) {
@@ -154,10 +149,8 @@ export class DialogDownloadBooking {
         const now = new Date();
         const pad = (n: number) => n.toString().padStart(2, '0');
         const timestamp = `${now.getFullYear()}-${pad(
-          now.getMonth() + 1
-        )}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(
-          now.getMinutes()
-        )}`;
+          now.getMonth() + 1,
+        )}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(now.getMinutes())}`;
         const fileName = `reservas-${timestamp}.xlsx`;
 
         // Configuração do link para download
@@ -203,7 +196,7 @@ export class DialogUploadBooking {
   isLoadingUploadBookings: boolean = false;
   constructor(
     private bookingService: BookingService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   selectedFile: File | null = null;

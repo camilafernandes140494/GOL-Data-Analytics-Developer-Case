@@ -4,11 +4,7 @@
     [description]="'Preencha os dados da reserva'"
     [showBackButton]="true"
   />
-  <form
-    [formGroup]="bookingForm"
-    (ngSubmit)="handleCreateBooking($event)"
-    class="div-form"
-  >
+  <form [formGroup]="bookingForm" (ngSubmit)="handleCreateBooking($event)" class="div-form">
     <mat-card appearance="outlined" class="card-center">
       <mat-card-content [formGroup]="bookingForm" class="card-content-center">
         <mat-form-field appearance="outline">
@@ -30,10 +26,7 @@
             (click)="birthdayPicker.open()"
             required
           />
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="birthdayPicker"
-          ></mat-datepicker-toggle>
+          <mat-datepicker-toggle matIconSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
           <mat-datepicker #birthdayPicker></mat-datepicker>
         </mat-form-field>
 
@@ -52,10 +45,7 @@
               (click)="departurePicker.open()"
               required
             />
-            <mat-datepicker-toggle
-              matIconSuffix
-              [for]="departurePicker"
-            ></mat-datepicker-toggle>
+            <mat-datepicker-toggle matIconSuffix [for]="departurePicker"></mat-datepicker-toggle>
             <mat-datepicker #departurePicker></mat-datepicker>
           </mat-form-field>
 
@@ -68,10 +58,7 @@
               (click)="arrivalPicker.open()"
               required
             />
-            <mat-datepicker-toggle
-              matIconSuffix
-              [for]="arrivalPicker"
-            ></mat-datepicker-toggle>
+            <mat-datepicker-toggle matIconSuffix [for]="arrivalPicker"></mat-datepicker-toggle>
             <mat-datepicker #arrivalPicker></mat-datepicker>
           </mat-form-field>
         </div>
@@ -88,11 +75,9 @@
               formControlName="departure_iata"
             />
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option
-                *ngFor="let option of filteredOptions | async"
-                [value]="option"
-                >{{ option }}</mat-option
-              >
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{
+                option
+              }}</mat-option>
             </mat-autocomplete>
           </mat-form-field>
 
@@ -107,11 +92,9 @@
               formControlName="arrival_iata"
             />
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option
-                *ngFor="let option of filteredOptions | async"
-                [value]="option"
-                >{{ option }}</mat-option
-              >
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{
+                option
+              }}</mat-option>
             </mat-autocomplete>
           </mat-form-field>
         </div>
@@ -124,11 +107,7 @@
           class="button-save"
         >
           <div class="button-row">
-            <mat-spinner
-              *ngIf="isLoading"
-              diameter="20"
-              class="custom-spinner"
-            ></mat-spinner>
+            <mat-spinner *ngIf="isLoading" diameter="20" class="custom-spinner"></mat-spinner>
             <span>Salvar</span>
           </div>
         </button>

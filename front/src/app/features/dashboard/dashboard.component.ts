@@ -73,7 +73,7 @@ export class DashboardComponent {
 
   constructor(
     private dashboardService: DashboardService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   months = MONTHS;

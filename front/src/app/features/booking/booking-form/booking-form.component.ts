@@ -8,12 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AIRPORT_CODES } from '../../../constants/constants';
@@ -55,7 +50,7 @@ export class BookingFormComponent implements OnInit {
   constructor(
     private bookingService: BookingService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
   ) {
     // Criando o formulário reativo
     this.bookingForm = new FormGroup({
@@ -74,15 +69,13 @@ export class BookingFormComponent implements OnInit {
     // Configurando o autocomplete para o campo de aeroportos
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
-      map((value) => this._filter(value || ''))
+      map((value) => this._filter(value || '')),
     );
   }
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.options.filter((option) =>
-      option.toLowerCase().includes(filterValue)
-    );
+    return this.options.filter((option) => option.toLowerCase().includes(filterValue));
   }
 
   handleCreateBooking(event: Event) {
@@ -114,16 +107,12 @@ export class BookingFormComponent implements OnInit {
         },
       });
     } else {
-      this.snackBar.open(
-        'Por favor, preencha todos os campos corretamente.',
-        '',
-        {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['snackbar-warning'],
-        }
-      );
+      this.snackBar.open('Por favor, preencha todos os campos corretamente.', '', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-warning'],
+      });
       this.isLoading = false;
     }
   }

@@ -7,10 +7,7 @@
   <mat-drawer mode="side" opened>
     <mat-nav-list>
       <!-- Reservas de voos Button -->
-      <mat-list-item
-        (click)="navigateToBooking()"
-        [ngClass]="{ active: activeTab === 'booking' }"
-      >
+      <mat-list-item (click)="navigateToBooking()" [ngClass]="{ active: activeTab === 'booking' }">
         <div class="mat-list-item">
           <mat-icon>flight_takeoff</mat-icon>
           <span>Reservas de voos</span>
