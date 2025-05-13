@@ -38,7 +38,6 @@ export class BookingComponent {
   nome: string = '';
 
   isLoadingBookings: boolean = false;
-  // Dados de exemplo para a tabela
   dataSource = new MatTableDataSource<Booking>();
 
   displayedColumns: string[] = [
@@ -57,7 +56,6 @@ export class BookingComponent {
   ) {}
 
   ngOnInit() {
-    // Chama o método getBookings ao inicializar o componente
     this.loadBookings();
   }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -97,7 +95,6 @@ export class BookingComponent {
       });
   }
 
-  // Função para aplicar o filtro na tabela
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -135,16 +132,13 @@ export class DialogDownloadBooking {
 
     this.bookingService.downloadBookings().subscribe({
       next: (response: Blob) => {
-        // Criação do Blob com o conteúdo recebido
         const blob = new Blob([response], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         });
 
-        // Criação do link para o download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
 
-        // Criação do nome do arquivo com timestamp
         const now = new Date();
         const pad = (n: number) => n.toString().padStart(2, '0');
         const timestamp = `${now.getFullYear()}-${pad(
@@ -152,14 +146,12 @@ export class DialogDownloadBooking {
         )}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(now.getMinutes())}`;
         const fileName = `reservas-${timestamp}.xlsx`;
 
-        // Configuração do link para download
         a.href = url;
         a.download = fileName;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
 
-        // Revogar URL para liberar recursos
         window.URL.revokeObjectURL(url);
 
         this.snackBar.open('Download completo', '', {

@@ -29,14 +29,12 @@ input-full-width {
   stroke: #ff5e00;
 }
 
-/* Quando o input estiver em foco (ativo) */
 mat-form-field.mat-focused .material-symbols-outlined {
   color: #005cbb;
 }
 
-/* Quando o ícone for passado por cima (hover) */
 .material-symbols-outlined:hover {
-  color: #005cbb; /* A cor que você deseja quando passar o mouse sobre o ícone */
+  color: #005cbb; 
 }
 
 .created-booking {

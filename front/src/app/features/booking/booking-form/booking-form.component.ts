@@ -51,7 +51,6 @@ export class BookingFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private router: Router,
   ) {
-    // Criando o formulário reativo
     this.bookingForm = new FormGroup({
       first_name: new FormControl('', Validators.required),
       last_name: new FormControl('', Validators.required),
@@ -65,7 +64,6 @@ export class BookingFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Configurando o autocomplete para o campo de aeroportos
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value || '')),

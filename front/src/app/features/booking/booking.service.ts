@@ -24,11 +24,6 @@ export interface BookingResponse {
 export class BookingService {
   constructor(private apiService: ApiService) {}
 
-  // Botão	Cadastrar uma reserva	POST /api/v1/booking
-  // Botão	Download das reservas	GET /api/v1/booking/file/download
-  // Botão	Upload das reservas	POST /api/v1/booking/file/upload
-  // Tabela	Reservas	GET /api/v1/booking
-
   getBookings(params: Pick<BookingResponse, 'limit'>) {
     return this.apiService.get<BookingResponse>(`/api/v1/booking?limit=${params.limit}`);
   }
