@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { DateAdapter, provideNativeDateAdapter } from '@angular/material/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -50,6 +50,7 @@ export class BookingFormComponent implements OnInit {
     private bookingService: BookingService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private dateAdapter: DateAdapter<any>,
   ) {
     this.bookingForm = new FormGroup({
       first_name: new FormControl('', Validators.required),
@@ -64,6 +65,7 @@ export class BookingFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dateAdapter.setLocale('pt-BR');
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value || '')),
