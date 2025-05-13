@@ -23,4 +23,5 @@ EXPOSE 443
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy project
-COPY --from=node /gdadc/dist/gdadc/browser /usr/share/nginx/html
+COPY --from=node /gdadc/dist/frontend/browser /usr/share/nginx/html
+
