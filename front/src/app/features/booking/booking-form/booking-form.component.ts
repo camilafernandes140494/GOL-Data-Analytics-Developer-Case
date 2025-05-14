@@ -10,8 +10,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AIRPORT_CODES } from '../../../constants/constants';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -39,12 +38,17 @@ import { NotificationService } from '../../../shared/components/notification/not
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookingFormComponent implements OnInit {
-  myControl = new FormControl('');
+  myControl = new FormControl<string | { value: string; name: string }>('');
   bookingForm: FormGroup;
   isLoading: boolean = false;
 
-  options: string[] = AIRPORT_CODES;
-  filteredOptions!: Observable<string[]>;
+  options: { value: string; name: string }[] = AIRPORT_CODES;
+  filteredOptionsDeparture: { value: string; name: string }[] = [];
+  filteredOptionsArrival: { value: string; name: string }[] = [];
+
+  minArrivalDate: Date | null = null;
+  departureDateControl!: FormControl;
+  arrivalDateControl!: FormControl;
 
   constructor(
     private bookingService: BookingService,
@@ -66,15 +70,36 @@ export class BookingFormComponent implements OnInit {
 
   ngOnInit() {
     this.dateAdapter.setLocale('pt-BR');
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || '')),
-    );
+
+    this.departureDateControl = this.bookingForm.get('departure_date') as FormControl;
+    this.arrivalDateControl = this.bookingForm.get('arrival_date') as FormControl;
+    this.departureDateControl?.valueChanges.subscribe((date: Date) => {
+      this.minArrivalDate = date;
+
+      if (this.arrivalDateControl?.value && this.arrivalDateControl.value < date) {
+        this.arrivalDateControl.setValue(null);
+      }
+    });
+
+    this.filteredOptionsDeparture = this.options;
+    this.filteredOptionsArrival = this.options;
+
+    this.bookingForm.get('departure_iata')?.valueChanges.subscribe((value) => {
+      this.filteredOptionsDeparture = this._filter(value);
+    });
+
+    this.bookingForm.get('arrival_iata')?.valueChanges.subscribe((value) => {
+      this.filteredOptionsArrival = this._filter(value);
+    });
   }
 
-  private _filter(value: string): string[] {
+  displayFn(option: { value: string; name: string }): string {
+    return option?.name || '';
+  }
+
+  private _filter(value: string): { value: string; name: string }[] {
     const filterValue = value.toLowerCase();
-    return this.options.filter((option) => option.toLowerCase().includes(filterValue));
+    return this.options.filter((option) => option.name.toLowerCase().includes(filterValue));
   }
 
   handleCreateBooking(event: Event) {
@@ -82,8 +107,12 @@ export class BookingFormComponent implements OnInit {
     this.isLoading = true;
     if (this.bookingForm.valid) {
       const bookingData = this.bookingForm.value;
-
-      this.bookingService.createBooking(bookingData).subscribe({
+      const payload = {
+        ...bookingData,
+        departure_iata: bookingData.departure_iata?.value || '',
+        arrival_iata: bookingData.arrival_iata?.value || '',
+      };
+      this.bookingService.createBooking(payload).subscribe({
         next: () => {
           this.notificationService.success('Reserva criada com sucesso!');
           this.isLoading = false;

@@ -56,6 +56,7 @@
               [matDatepicker]="arrivalPicker"
               formControlName="arrival_date"
               (click)="arrivalPicker.open()"
+              [min]="minArrivalDate"
               required
             />
             <mat-datepicker-toggle matIconSuffix [for]="arrivalPicker"></mat-datepicker-toggle>
@@ -64,6 +65,7 @@
         </div>
 
         <div class="row">
+          <!-- Campo "Saindo de" -->
           <mat-form-field appearance="outline">
             <mat-label>Saindo de</mat-label>
             <input
@@ -71,13 +73,13 @@
               placeholder="AAL"
               aria-label="Saindo de"
               matInput
-              [matAutocomplete]="auto"
+              [matAutocomplete]="autoDeparture"
               formControlName="departure_iata"
             />
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{
-                option
-              }}</mat-option>
+            <mat-autocomplete #autoDeparture="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let option of filteredOptionsDeparture" [value]="option">
+                {{ option.name }}
+              </mat-option>
             </mat-autocomplete>
           </mat-form-field>
 
@@ -88,13 +90,13 @@
               placeholder="AAN"
               aria-label="Indo para"
               matInput
-              [matAutocomplete]="auto"
+              [matAutocomplete]="autoArrival"
               formControlName="arrival_iata"
             />
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{
-                option
-              }}</mat-option>
+            <mat-autocomplete #autoArrival="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let option of filteredOptionsArrival" [value]="option">
+                {{ option.name }}
+              </mat-option>
             </mat-autocomplete>
           </mat-form-field>
         </div>
