@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BookingService } from '../booking.service';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../shared/components/notification/notification.service';
 
 @Component({
   selector: 'app-booking-form',
@@ -48,9 +48,9 @@ export class BookingFormComponent implements OnInit {
 
   constructor(
     private bookingService: BookingService,
-    private snackBar: MatSnackBar,
     private router: Router,
-    private dateAdapter: DateAdapter<any>,
+    private dateAdapter: DateAdapter<unknown>,
+    private notificationService: NotificationService,
   ) {
     this.bookingForm = new FormGroup({
       first_name: new FormControl('', Validators.required),
@@ -85,33 +85,18 @@ export class BookingFormComponent implements OnInit {
 
       this.bookingService.createBooking(bookingData).subscribe({
         next: () => {
-          this.snackBar.open('Reserva criada com sucesso!', '', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.notificationService.success('Reserva criada com sucesso!');
           this.isLoading = false;
           this.bookingForm.reset();
           this.router.navigate(['/booking']);
         },
         error: () => {
-          this.snackBar.open('Ocorreu um erro ao tentar reservar', '', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            panelClass: ['snackbar-error'],
-          });
+          this.notificationService.error('Ocorreu um erro ao tentar reservar');
           this.isLoading = false;
         },
       });
     } else {
-      this.snackBar.open('Por favor, preencha todos os campos corretamente.', '', {
-        duration: 3000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        panelClass: ['snackbar-warning'],
-      });
+      this.notificationService.warning('Por favor, preencha todos os campos corretamente.');
       this.isLoading = false;
     }
   }

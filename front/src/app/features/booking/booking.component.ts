@@ -9,10 +9,10 @@ import { Booking, BookingResponse, BookingService } from './booking.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { HeaderComponent } from '../../shared/components/header/header.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NotificationService } from '../../shared/components/notification/notification.service';
 
 @Component({
   selector: 'app-booking',
@@ -52,7 +52,7 @@ export class BookingComponent {
   ];
   constructor(
     private bookingService: BookingService,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -84,12 +84,8 @@ export class BookingComponent {
           this.isLoadingBookings = false;
         },
         error: () => {
-          this.snackBar.open('Erro ao carregar as reservas.', '', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            panelClass: ['snackbar-error'],
-          });
+          this.notificationService.error('Erro ao fazer download das reservas.');
+
           this.isLoadingBookings = false;
         },
       });
@@ -103,27 +99,27 @@ export class BookingComponent {
   readonly dialog = inject(MatDialog);
 
   openDialogDownloadBooking() {
-    this.dialog.open(DialogDownloadBooking);
+    this.dialog.open(DialogDownloadBookingComponent);
   }
 
   openDialogUploadBooking() {
-    this.dialog.open(DialogUploadBooking);
+    this.dialog.open(DialogUploadBookingComponent);
   }
 }
 
 @Component({
-  selector: 'download-booking-dialog',
+  selector: 'app-download-booking-dialog',
   templateUrl: 'download-booking-dialog.html',
   styleUrls: ['./booking.component.scss'],
   imports: [MatDialogModule, MatButtonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DialogDownloadBooking {
+export class DialogDownloadBookingComponent {
   isLoadingDownloadBookings: boolean = false;
 
   constructor(
     private bookingService: BookingService,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
   ) {}
 
   handleDownloadBookings(event: Event) {
@@ -153,21 +149,10 @@ export class DialogDownloadBooking {
         document.body.removeChild(a);
 
         window.URL.revokeObjectURL(url);
-
-        this.snackBar.open('Download completo', '', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['snackbar-success'],
-        });
+        this.notificationService.success('Download completo');
       },
       error: () => {
-        this.snackBar.open('Erro ao fazer download das reservas.', '', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['snackbar-error'],
-        });
+        this.notificationService.error('Erro ao fazer download das reservas.');
         this.isLoadingDownloadBookings = false;
       },
     });
@@ -175,17 +160,17 @@ export class DialogDownloadBooking {
 }
 
 @Component({
-  selector: 'upload-booking-dialog',
+  selector: 'app-upload-booking-dialog',
   templateUrl: 'upload-booking-dialog.html',
   styleUrls: ['./booking.component.scss'],
   imports: [MatDialogModule, MatButtonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DialogUploadBooking {
+export class DialogUploadBookingComponent {
   isLoadingUploadBookings: boolean = false;
   constructor(
     private bookingService: BookingService,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
   ) {}
 
   selectedFile: File | null = null;
@@ -201,21 +186,11 @@ export class DialogUploadBooking {
 
       this.bookingService.uploadBookings(formData).subscribe({
         next: () => {
-          this.snackBar.open('Upload completo', '', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.notificationService.success('Upload completo!');
           this.isLoadingUploadBookings = false;
         },
         error: () => {
-          this.snackBar.open('Erro ao fazer upload das reservas.', '', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            panelClass: ['snackbar-error'],
-          });
+          this.notificationService.error('Ocorreu um erro ao tentar reservar');
           this.isLoadingUploadBookings = false;
         },
       });

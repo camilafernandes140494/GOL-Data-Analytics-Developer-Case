@@ -3,7 +3,6 @@ import { HeaderComponent } from '../../shared/components/header/header.component
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DashboardService, DataItemTable, TableDataResponse } from './dashboard.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MONTHS } from '../../constants/constants';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NotificationService } from '../../shared/components/notification/notification.service';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -70,7 +70,7 @@ export class DashboardComponent {
 
   constructor(
     private dashboardService: DashboardService,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
   ) {}
 
   months = MONTHS;
@@ -110,8 +110,8 @@ export class DashboardComponent {
 
         if (this.monthSelectChartData1) {
           this.dataData1 = allData.filter((item) => {
-            const month = new Date(item.name).getMonth() + 1; // getMonth() retorna 0-11
-            const monthString = month.toString().padStart(2, '0'); // sempre com 2 dígitos
+            const month = new Date(item.name).getMonth() + 1;
+            const monthString = month.toString().padStart(2, '0');
             return monthString === this.monthSelectChartData1;
           });
         } else {
@@ -121,12 +121,7 @@ export class DashboardComponent {
         this.isLoadingChartData1 = false;
       },
       error: () => {
-        this.snackBar.open('Erro ao carregar os gráficos.', '', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['snackbar-error'],
-        });
+        this.notificationService.error('Erro ao carregar os gráficos.');
         this.isLoadingChartData1 = false;
       },
     });
@@ -155,12 +150,7 @@ export class DashboardComponent {
         this.isLoadingChartData2 = false;
       },
       error: () => {
-        this.snackBar.open('Erro ao carregar os gráficos.', '', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['snackbar-error'],
-        });
+        this.notificationService.error('Erro ao carregar os gráficos.');
         this.isLoadingChartData2 = false;
       },
     });
@@ -181,12 +171,7 @@ export class DashboardComponent {
         this.isLoadingChartData3 = false;
       },
       error: () => {
-        this.snackBar.open('Erro ao carregar os gráficos.', '', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['snackbar-error'],
-        });
+        this.notificationService.error('Erro ao carregar os gráficos.');
         this.isLoadingChartData3 = false;
       },
     });
@@ -206,12 +191,7 @@ export class DashboardComponent {
           this.isLoadingDashboardData = false;
         },
         error: () => {
-          this.snackBar.open('Erro ao carregar dados da tabela.', '', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'top',
-            panelClass: ['snackbar-error'],
-          });
+          this.notificationService.error('Erro ao carregar dados da tabela.');
           this.isLoadingDashboardData = false;
         },
       });
