@@ -1,27 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import * as CryptoJS from 'crypto-js';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService,
+  ) {}
+
+  storeToken(token: string): void {
+    localStorage.setItem('TOKEN_KEY', token);
+  }
+  getToken(): string | null {
+    return localStorage.getItem('TOKEN_KEY');
+  }
+
+  private getTokenKey(): string {
+    const token = this.getToken();
+    if (token) {
+      return token;
+    } else {
+      const newToken = this.auth.generateEncryptedToken();
+      this.storeToken(newToken);
+      return newToken;
+    }
+  }
 
   private getAuthHeaders(): HttpHeaders {
-    const pass = environment.authTokenPass;
-    const key = CryptoJS.enc.Base64.parse(environment.authTokenKey);
-    const iv = CryptoJS.enc.Utf8.parse(environment.authTokenIv);
-
-    const encryptedToken = CryptoJS.AES.encrypt(pass, key, {
-      iv: iv,
-      mode: CryptoJS.mode.CBC,
-    }).toString();
-
     return new HttpHeaders({
-      Authorization: `Bearer ${encryptedToken}`,
+      Authorization: `Bearer ${this.getTokenKey()}`,
     });
   }
 
