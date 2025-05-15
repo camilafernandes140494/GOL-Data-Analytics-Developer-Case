@@ -59,3 +59,9 @@ mat-card-content {
   width: 100%;
   padding-top: 2rem;
 }
+.no-items-found-button {
+  color: #ff5e00 !important;
+  &:hover {
+    background-color: #fadabd;
+  }
+}

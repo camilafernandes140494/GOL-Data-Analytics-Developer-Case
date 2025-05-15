@@ -84,7 +84,7 @@ export class BookingComponent {
           this.isLoadingBookings = false;
         },
         error: () => {
-          this.notificationService.error('Erro ao fazer download das reservas.');
+          this.notificationService.error('Erro ao carregar reservas.');
 
           this.isLoadingBookings = false;
         },
