@@ -11,6 +11,10 @@
     A planilha contém dados organizados por viagem, permitindo uma análise rápida e eficiente. O
     download é seguro e os dados são atualizados em tempo real para garantir precisão.
   </p>
+
+  <div class="spinner-container" *ngIf="isLoadingDownloadBookings">
+    <mat-spinner diameter="40" class="custom-spinner"></mat-spinner>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
@@ -20,7 +24,6 @@
     mat-button
     cdkFocusInitial
     (click)="handleDownloadBookings($event)"
-    [mat-dialog-close]="true"
     [disabled]="isLoadingDownloadBookings"
   >
     Baixar planilha

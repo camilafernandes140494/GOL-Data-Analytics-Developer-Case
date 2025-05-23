@@ -28,6 +28,11 @@ input-full-width {
 ::ng-deep .custom-spinner circle {
   stroke: #ff5e00;
 }
+.spinner-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+}
 
 mat-form-field.mat-focused .material-symbols-outlined {
   color: #005cbb;

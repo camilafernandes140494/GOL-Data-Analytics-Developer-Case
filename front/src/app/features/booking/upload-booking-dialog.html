@@ -11,7 +11,9 @@
     Certifique-se de que a planilha segue o modelo padrão com os dados corretos. O sistema validará
     as informações automaticamente antes de salvar.
   </p>
-
+<div class="spinner-container" *ngIf="isLoadingUploadBookings">
+  <mat-spinner diameter="40" class="custom-spinner"></mat-spinner>
+</div>
   <input
     #fileInput
     type="file"

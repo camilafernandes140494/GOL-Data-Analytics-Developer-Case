@@ -11,7 +11,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '../../shared/components/notification/notification.service';
 
 @Component({
@@ -103,15 +103,22 @@ export class BookingComponent {
   }
 
   openDialogUploadBooking() {
-    this.dialog.open(DialogUploadBookingComponent);
+  const dialogRef = this.dialog.open(DialogUploadBookingComponent);
+
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result === 'uploaded') {
+      this.loadBookings(); 
+    }
+  });
   }
+
 }
 
 @Component({
   selector: 'app-download-booking-dialog',
   templateUrl: 'download-booking-dialog.html',
   styleUrls: ['./booking.component.scss'],
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [MatDialogModule, MatButtonModule, MatProgressSpinnerModule, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogDownloadBookingComponent {
@@ -120,6 +127,7 @@ export class DialogDownloadBookingComponent {
   constructor(
     private bookingService: BookingService,
     private notificationService: NotificationService,
+    private dialogRef: MatDialogRef<DialogDownloadBookingComponent>
   ) {}
 
   handleDownloadBookings(event: Event) {
@@ -150,10 +158,12 @@ export class DialogDownloadBookingComponent {
 
         window.URL.revokeObjectURL(url);
         this.notificationService.success('Download completo');
+        this.dialogRef.close(); 
       },
       error: () => {
         this.notificationService.error('Erro ao fazer download das reservas.');
         this.isLoadingDownloadBookings = false;
+        this.dialogRef.close();
       },
     });
   }
@@ -163,7 +173,7 @@ export class DialogDownloadBookingComponent {
   selector: 'app-upload-booking-dialog',
   templateUrl: 'upload-booking-dialog.html',
   styleUrls: ['./booking.component.scss'],
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [MatDialogModule, MatButtonModule,MatProgressSpinnerModule, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogUploadBookingComponent {
@@ -171,6 +181,8 @@ export class DialogUploadBookingComponent {
   constructor(
     private bookingService: BookingService,
     private notificationService: NotificationService,
+    private dialogRef: MatDialogRef<DialogUploadBookingComponent>
+
   ) {}
 
   selectedFile: File | null = null;
@@ -187,11 +199,14 @@ export class DialogUploadBookingComponent {
       this.bookingService.uploadBookings(formData).subscribe({
         next: () => {
           this.notificationService.success('Upload completo!');
+          this.dialogRef.close('uploaded');
           this.isLoadingUploadBookings = false;
+          this.dialogRef.close();
         },
         error: () => {
           this.notificationService.error('Ocorreu um erro ao tentar reservar');
           this.isLoadingUploadBookings = false;
+          this.dialogRef.close();
         },
       });
     }

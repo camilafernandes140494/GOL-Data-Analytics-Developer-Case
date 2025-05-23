@@ -8,4 +8,6 @@ export const routes: Routes = [
   { path: 'booking', component: BookingComponent },
   { path: 'create-booking', component: BookingFormComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: '**', redirectTo: 'booking' }
+
 ];
